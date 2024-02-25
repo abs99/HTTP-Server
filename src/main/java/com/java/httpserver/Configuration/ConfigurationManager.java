@@ -11,11 +11,11 @@ import java.io.IOException;
 
 public class ConfigurationManager {
 
-    private static ConfigurationManager myConfigManager;
+    private  static ConfigurationManager myConfigManager;
 
     private static Config myConfig;
 
-    public ConfigurationManager() {
+    private ConfigurationManager() {
     }
     public static ConfigurationManager getInstance(){
         if(myConfigManager==null){
@@ -40,7 +40,7 @@ public class ConfigurationManager {
         int i;
         while (true){
             try {
-                if (((i=fileReader.read())!=-1)) break;
+                if (((i=fileReader.read())==-1)) break;
             } catch (IOException e) {
                 throw new HttpConfigurationException("Unable to read File",e);
             }
@@ -52,10 +52,14 @@ public class ConfigurationManager {
             myConfig = Json.fromJson(node,Config.class);
         } catch (JsonProcessingException e) {
             throw new HttpConfigurationException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
     }
-
+/*
+*Get Current Configuration
+*/
     public static  Config getCurrentConfiguration(){
 
         if(myConfig==null){
