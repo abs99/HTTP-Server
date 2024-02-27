@@ -59,6 +59,10 @@ public class HttpParser {
                 dataBuffer.delete(0,dataBuffer.length());
             }else {
                 dataBuffer.append((char) _byte);
+
+                if(!isMethodParsed && dataBuffer.length()>HttpMethod.MAX_METHOD_LENGTH){
+                        throw new HttpParsingException(HttpStatusCode.SERVER_ERROR_501_NOT_IMPLEMENTED);
+                }
             }
         }
     }
