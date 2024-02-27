@@ -42,8 +42,12 @@ public class HttpParser {
                 _byte=reader.read();
                 if(_byte==LF){
                     LOGGER.debug("Request Line to Process : {}",dataBuffer.toString());
+                    if(!isMethodParsed || !isResourceTargrtParsed){
+                        throw new HttpParsingException(HttpStatusCode.CLIENT_ERROR_BAD_REQUEST);
+                    }
                     return;
                 }
+
             }
 
             if(_byte==SP){
@@ -54,6 +58,8 @@ public class HttpParser {
                 } else if (!isResourceTargrtParsed) {
                     LOGGER.debug("Resource Target Parsed : {}", dataBuffer.toString());
                     isResourceTargrtParsed = true;
+                }else{
+                    throw new HttpParsingException(HttpStatusCode.CLIENT_ERROR_BAD_REQUEST);
                 }
 
                 dataBuffer.delete(0,dataBuffer.length());
