@@ -20,7 +20,7 @@ public class HttpRequest extends HttpMessage{
     }
 
     public void setMethod(String method) throws HttpParsingException {
-        LOGGER.debug("setMethod called for {}",method );
+
         for(HttpMethod httpMethod : HttpMethod.values()){
             LOGGER.debug(httpMethod.name() );
             if(method.equals(httpMethod.name())){
@@ -32,5 +32,14 @@ public class HttpRequest extends HttpMessage{
                 HttpStatusCode.SERVER_ERROR_501_NOT_IMPLEMENTED
         );
 
+    }
+
+    public void setRequestTarget(String requestTarget) throws HttpParsingException {
+        if(requestTarget==null || requestTarget.isEmpty()) throw new HttpParsingException(HttpStatusCode.CLIENT_ERROR_BAD_REQUEST);
+        this.requestTarget = requestTarget;
+    }
+
+    public String getRequestTarget() {
+        return requestTarget;
     }
 }
